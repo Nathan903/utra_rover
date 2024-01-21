@@ -75,6 +75,40 @@ void loop() {
     return;
   }
 
+
+// TESTTURNING
+  if(counter==counter_total-1){
+    int turnamount = 0;
+    while(! (absoluteValue(rightSensorValue)>THRES) && !(absoluteValue(rightSensorValue)>THRES)  ){
+      turnamount+=2;
+      //try right
+      for (int i = 0; i<=turnamount; i++{
+        left(DIRECTION,TURNSPEED);
+        right(-DIRECTION,TURNSPEED);        
+      }
+      if((absoluteValue(rightSensorValue)>THRES) && !(absoluteValue(leftSensorValue)>THRES) ){ 
+        // keep turning
+        while(! ((absoluteValue(rightSensorValue)<THRES) && (absoluteValue(leftSensorValue)<THRES))){
+          left(DIRECTION,TURNSPEED);
+          right(-DIRECTION,TURNSPEED);        
+        }
+        break; 
+      }
+      for (int i = 0; i<=2*turnamount; i++{
+        left(DIRECTION,TURNSPEED);
+        right(-DIRECTION,TURNSPEED);        
+      }
+      if(!(absoluteValue(rightSensorValue)>THRES) && (absoluteValue(leftSensorValue)>THRES) ){ 
+        while(! ((absoluteValue(rightSensorValue)<THRES) && (absoluteValue(leftSensorValue)<THRES))){
+          left(-DIRECTION,TURNSPEED);
+          right(DIRECTION,TURNSPEED);        
+        }
+        break; 
+      }
+    }
+  }
+    ///////////////////////////////////
+
   int leftSensorValue = analogRead(leftSensorPin);
   int rightSensorValue = analogRead(rightSensorPin);
   int error = rightSensorValue - leftSensorValue;
