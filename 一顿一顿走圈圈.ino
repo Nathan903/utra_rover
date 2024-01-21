@@ -1,3 +1,10 @@
+int SPEED=71; // speed for going forward / backward
+int TURNSPEED=77; // speed during turning
+int DIRECTION=1; // make -1 to make car go in reverse
+int THRES = 111; // threshold for determining if the sensor is seeing black
+int ERROR_THRES = 66; // threshold to determine if error (diff between left and right sensor) is large enough to warrant a turn
+float PERCENTAGE_OF_IDLE = 0.95; // percentage of the loops (not time) which the car is stopped.
+
 ////////////// ports
 int motor1pin1 = 3;//2;
 int motor1pin2 = 5;//3;
@@ -48,13 +55,17 @@ void right(int direction, int speed) {
     analogWrite(motor2pin2, speed);
   }
 }
+void turnleft(){
+  left(-DIRECTION,TURNSPEED);
+  right(DIRECTION,TURNSPEED);        
+}
+void turnright(){
+  left(DIRECTION,TURNSPEED);
+  right(-DIRECTION,TURNSPEED);        
 
-int SPEED=71; // speed for going forward / backward
-int TURNSPEED=77; // speed during turning
-int DIRECTION=1; // make -1 to make car go in reverse
-int THRES = 111; // threshold for determining if the sensor is seeing black
-int ERROR_THRES = 66; // threshold to determine if error (diff between left and right sensor) is large enough to warrant a turn
-float PERCENTAGE_OF_IDLE = 0.95; // percentage of the loops (not time) which the car is stopped.
+}
+#define LEFT_SEE_BLACK (absoluteValue(leftSensorValue)>THRES)
+#define RIGHT_SEE_BLACK (absoluteValue(rightSensorValue)>THRES)
 
 long counter=0; // 
 const long counter_total =100;
@@ -79,29 +90,25 @@ void loop() {
 // TESTTURNING
   if(counter==counter_total-1){
     int turnamount = 0;
-    while(! (absoluteValue(rightSensorValue)>THRES) && !(absoluteValue(rightSensorValue)>THRES)  ){
+    while(! LEFT_SEE_BLACK && !RIGHT_SEE_BLACK ){
+      int leftSensorValue = analogRead(leftSensorPin);
+      int rightSensorValue = analogRead(rightSensorPin);
       turnamount+=2;
       //try right
-      for (int i = 0; i<=turnamount; i++{
-        left(DIRECTION,TURNSPEED);
-        right(-DIRECTION,TURNSPEED);        
+      for (int i = 0; i<=turnamount; i++){
+        turnright();
       }
-      if((absoluteValue(rightSensorValue)>THRES) && !(absoluteValue(leftSensorValue)>THRES) ){ 
+      if(RIGHT_SEE_BLACK ){ 
         // keep turning
-        while(! ((absoluteValue(rightSensorValue)<THRES) && (absoluteValue(leftSensorValue)<THRES))){
-          left(DIRECTION,TURNSPEED);
-          right(-DIRECTION,TURNSPEED);        
-        }
+        while( RIGHT_SEE_BLACK ){ turnright(); }
         break; 
       }
-      for (int i = 0; i<=2*turnamount; i++{
-        left(DIRECTION,TURNSPEED);
-        right(-DIRECTION,TURNSPEED);        
+      for (int i = 0; i<=2*turnamount; i++){
+        turnleft();
       }
-      if(!(absoluteValue(rightSensorValue)>THRES) && (absoluteValue(leftSensorValue)>THRES) ){ 
-        while(! ((absoluteValue(rightSensorValue)<THRES) && (absoluteValue(leftSensorValue)<THRES))){
-          left(-DIRECTION,TURNSPEED);
-          right(DIRECTION,TURNSPEED);        
+      if(LEFT_SEE_BLACK){ 
+        while(LEFT_SEE_BLACK){
+          turnleft();
         }
         break; 
       }
