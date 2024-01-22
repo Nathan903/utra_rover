@@ -25,7 +25,7 @@ void loop() {
   digitalWrite(motor1pin2, LOW);
   digitalWrite(motor2pin1, LOW);
   digitalWrite(motor2pin2, HIGH);
-  delay(200);
+  delay(300);
   digitalWrite(motor1pin1, HIGH);
   digitalWrite(motor1pin2, LOW);
 

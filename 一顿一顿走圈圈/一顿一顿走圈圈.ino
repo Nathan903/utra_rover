@@ -65,8 +65,8 @@ void turnright(){
   right(-DIRECTION,TURNSPEED);        
 
 }
-#define LEFT_SEE_BLACK (absoluteValue(leftSensorValue)>THRES)
-#define RIGHT_SEE_BLACK (absoluteValue(rightSensorValue)>THRES)
+#define RIGHT_SEE_BLACK (absoluteValue(leftSensorValue)>THRES)
+#define LEFT_SEE_BLACK (absoluteValue(rightSensorValue)>THRES)
 #define leftSensorValue analogRead(leftSensorPin)
 #define rightSensorValue analogRead(rightSensorPin)
     
@@ -103,11 +103,11 @@ void loop() {
       }
       if(RIGHT_SEE_BLACK ){ 
         // keep turning
-        while( RIGHT_SEE_BLACK ){ turnright(); }
+        while( RIGHT_SEE_BLACK ){Serial.print("FOUNDRIGHT GOING_RIGHT"); turnright()); }
         break; 
       } else if(LEFT_SEE_BLACK ){ 
         // keep turning
-        while( LEFT_SEE_BLACK ){ turnleft(); }
+        while( LEFT_SEE_BLACK ){Serial.print("FOUNDLEFT GOING_LEFT"); turnleft(); }
         break; 
       }
 
@@ -117,18 +117,17 @@ void loop() {
         turnleft();
       }
       if(LEFT_SEE_BLACK){ 
-        while(LEFT_SEE_BLACK){turnleft();}
+        while(LEFT_SEE_BLACK){Serial.print("FOUNDLEFT GOING_LEFT");turnleft();}
         break; 
       }else if(RIGHT_SEE_BLACK ){ 
         // keep turning
-        while( RIGHT_SEE_BLACK ){ turnright(); }
+        while( RIGHT_SEE_BLACK ){Serial.print("FOUNDRIGHT GOING_RIGHT");  turnright(); }
         break; 
       }
     }
     }
+    Serial.println("=================FIXED========================");
   }
-  Serial.println("=================FIXED========================");
-    ///////////////////////////////////
 
   int error = rightSensorValue - leftSensorValue;
   if (absoluteValue(rightSensorValue)>THRES && absoluteValue(leftSensorValue)>THRES){
